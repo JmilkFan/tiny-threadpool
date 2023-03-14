@@ -16,6 +16,9 @@
 #include <stdint.h>
 #include "thpool.h"
 
+/**
+ * Job 函数，由 Producer 提供。
+ */
 void task(void *arg){
 	printf("Thread #%u working on %d\n", (int)pthread_self(), (int) arg);
 }
@@ -29,6 +32,7 @@ int main(){
 	puts("Adding 40 tasks to threadpool");
 	int i;
 	for (i=0; i<40; i++){
+		/* 将海量 Jobs 逐一加入到 Job queue 中，加入队列的过程会非常快，后续再由 Worker Threads 并发处理。*/
 		thpool_add_work(thpool, task, (void*)(uintptr_t)i);
 	};
 
